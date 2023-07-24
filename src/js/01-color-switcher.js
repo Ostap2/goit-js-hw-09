@@ -24,7 +24,7 @@ function getRandomHexColor() {
     startButton.disabled = false;
 
     stopButton.disabled = true;
-r
+
     clearInterval(intervalId);
   });
   
