@@ -27,9 +27,9 @@ document.querySelector('.form').addEventListener('submit', (event) => {
   for (let i = 0; i < amount; i++) {
     const position = i + 1;
     createPromise(position, delay).then(({ position, delay }) => {
-      Notiflix.Notify.Success(`✅ Fulfilled promise ${position} in ${delay}ms`);
+      Notiflix.Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
     }).catch(({ position, delay }) => {
-      Notiflix.Notify.Failure(`❌ Rejected promise ${position} in ${delay}ms`);
+      Notiflix.Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
     });
     delay += step; 
   }
