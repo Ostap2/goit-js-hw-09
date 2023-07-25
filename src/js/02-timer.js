@@ -1,3 +1,4 @@
+
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 
@@ -10,6 +11,7 @@ const options = {
     const selectedDate = selectedDates[0];
     if (selectedDate <= new Date()) {
       alert("Please choose a date in the future");
+      document.querySelector("[data-start]").disabled = true;
     } else {
       document.querySelector("[data-start]").disabled = false;
     }
@@ -18,7 +20,6 @@ const options = {
 
 const dateTimePicker = flatpickr("#datetime-picker", options);
 
-
 let countdownInterval;
 
 function startTimer() {
@@ -26,11 +27,11 @@ function startTimer() {
   const currentDate = new Date();
   if (selectedDate > currentDate) {
     countdownInterval = setInterval(updateTimer, 1000, selectedDate);
+    updateTimer(selectedDate);
   } else {
     alert("Please choose a date in the future");
   }
 }
-
 
 function updateTimer(selectedDate) {
   const currentDate = new Date();
@@ -44,11 +45,9 @@ function updateTimer(selectedDate) {
   }
 }
 
-
 function addLeadingZero(value) {
   return value.toString().padStart(2, "0");
 }
-
 
 function renderTimer({ days, hours, minutes, seconds }) {
   document.querySelector("[data-days]").textContent = addLeadingZero(days);
@@ -57,19 +56,22 @@ function renderTimer({ days, hours, minutes, seconds }) {
   document.querySelector("[data-seconds]").textContent = addLeadingZero(seconds);
 }
 
+function convertMs(ms) {
 
+  const second = 1000;
+  const minute = second * 60;
+  const hour = minute * 60;
+  const day = hour * 24;
+
+  const days = Math.floor(ms / day);
+
+  const hours = Math.floor((ms % day) / hour);
+
+  const minutes = Math.floor(((ms % day) % hour) / minute);
+
+  const seconds = Math.floor((((ms % day) % hour) % minute) / second);
+
+  return { days, hours, minutes, seconds };
+}
 
 document.querySelector("[data-start]").addEventListener("click", startTimer);
-
-
-const dateTimePicker = flatpickr("#datetime-picker", {
-  ...options,
-  onClose(selectedDates) {
-    const selectedDate = selectedDates[0];
-    if (selectedDate <= new Date()) {
-      alert("Please choose a date in the future");
-    } else {
-      document.querySelector("[data-start]").disabled = false;
-    }
-  },
-});
